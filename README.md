@@ -23,7 +23,7 @@ This repository provides a structured pipeline for transforming and processing l
 ---
 
 
-## Directory Structure
+## Code Structure
 
 ```
 order_centric/
