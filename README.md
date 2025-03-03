@@ -1,5 +1,16 @@
 # Order-Centric-Data-Augmentation
-# Order-Centric Processing Pipeline
+
+## Overview
+This repository contains the official implementation of the paper **"Order Doesn't Matter, But Reasoning Does: Training LLMs with Order-Centric Augmentation"**.
+
+We propose an **order-centric data augmentation framework** to enhance logical reasoning in large language models (LLMs) by leveraging the **commutativity** of premises and structured reordering of reasoning steps. Our experiments demonstrate that this approach significantly improves LLMs' ability to generalize across different logical reasoning structures.
+
+## Methodology
+We introduce two key augmentations:
+- **Condition Order Augmentation**: Randomly shuffling independent premises to teach models the logical equivalence of condition order.
+- **Answer Order Augmentation**: Using a **directed acyclic graph (DAG)** to identify valid step reorderings while maintaining logical dependencies.
+
+This framework allows LLMs to develop a more **flexible** and **generalized** reasoning process, overcoming biases from fixed sequential patterns.
 
 ## Overview
 
@@ -11,100 +22,76 @@ This repository provides a structured pipeline for transforming and processing l
 
 ---
 
-## Repository Structure
+
+## Directory Structure
 
 ```
 order_centric/
-│── condition/          # Preprocess conditions and steps
-│── answer/             # Step-wise transformations and logical restructuring
-│── test/               # Validation and evaluation scripts
-│── data/               # (Not included) Expected input and output datasets
-│── README.md           # Documentation
+│── code/
+│   ├── condition/    # Prepares input conditions
+│   │   ├── condition_ran.py
+│   │
+│   ├── answer/       # Processes and organizes step-by-step reasoning answers
+│   │   ├── extract_answer_steps.py
+│   │   ├── extract_steps_only.py
+│   │   ├── format_random_cot.py
+│   │   ├── generate_step_sequences.py
+│   │   ├── renumber_steps.py
+│   │   ├── reorganize_steps.py
+│   │
+│   ├── test/         # Evaluates the model performance
+│   │   ├── accuracy/       # Accuracy evaluation
+│   │   │   ├── folio_acc.py
+│   │   │   ├── logicnli_acc.py
+│   │   │   ├── ruletaker_acc.py
+│   │   │
+│   │   ├── inference/      # Inference scripts
+│   │   │   ├── folio_vllm.py
+│   │   │   ├── logicnli_vllm.py
+│   │   │   ├── ruletaker_vllm.py
 ```
 
 ---
 
-## 1️⃣ Condition Processing
+## Execution 
 
-Located in the `condition/` directory, this part prepares the conditions and logical dependencies for reasoning tasks.
+### 1️⃣ Condition Order Augmentation (`condition/`)
 
-### Files:
+- ``: Prepares the dataset by modifying input conditions before answer processing.
 
-- **extract\_conditions.py**: Extracts premise and step dependencies from dataset outputs.
-- **generate\_topological\_orders.py**: Computes valid topological orderings for logical steps.
-- **split\_steps.py**: Segments complex steps into structured step-by-step reasoning.
+### 2️⃣ Answer Order Augmentation (`answer/`)
 
-### Execution Order:
+This stage processes answer data, ensuring logical order, formatting, and restructuring.
 
-1. Run `extract_conditions.py` to parse logical dependencies.
-2. Run `generate_topological_orders.py` to compute step orderings.
-3. Run `split_steps.py` to segment reasoning steps.
+1. **Extract Steps**:
+   - `extract_answer_steps.py`: Extracts step-by-step reasoning paths from the dataset.
+   - `extract_steps_only.py`: Isolates only the reasoning steps without additional text.
+2. **Generate Logical Sequences**:
+   - `generate_step_sequences.py`: Creates different orderings of reasoning steps.
+3. **Reorganize and Format**:
+   - `reorganize_steps.py`: Reorders steps based on logical dependencies.
+   - `renumber_steps.py`: Renumbers steps after reorganization.
+   - `format_random_cot.py`: Converts reasoning steps into a structured format for training.
 
----
+### 3️⃣ Testing (`test/`)
 
-## 2️⃣ Answer Transformation
+#### **Inference (**``**):**
 
-Located in the `answer/` directory, this step focuses on restructuring answer sequences for enhanced logical reasoning.
+- `folio_vllm.py`: Runs inference on the FOLIO dataset.
+- `logicnli_vllm.py`: Runs inference on the LogicNLI dataset.
+- `ruletaker_vllm.py`: Runs inference on the RuleTaker dataset.
 
-### Files:
 
-- **reorder\_answers.py**: Randomizes step order based on valid dependency graphs.
-- **renumber\_steps.py**: Reassigns step numbers after reordering.
-- **format\_final\_output.py**: Generates final structured output.
+#### **Accuracy Evaluation (**``**):**
 
-### Execution Order:
-
-1. Run `reorder_answers.py` to reorder logical steps.
-2. Run `renumber_steps.py` to adjust step numbering.
-3. Run `format_final_output.py` to generate structured responses.
-
----
-
-## 3️⃣ Testing and Evaluation
-
-Located in the `test/` directory, this step verifies the integrity of transformed datasets.
-
-### Files:
-
-- **validate\_ordering.py**: Ensures logical consistency of reordered steps.
-- **compare\_with\_ground\_truth.py**: Compares generated outputs with reference data.
-
-### Execution Order:
-
-1. Run `validate_ordering.py` to check logical step order validity.
-2. Run `compare_with_ground_truth.py` to evaluate correctness.
-
----
-
-## Running the Pipeline
-
-### Example Commands:
-
-```bash
-# Step 1: Process conditions
-python condition/extract_conditions.py
-python condition/generate_topological_orders.py
-python condition/split_steps.py
-
-# Step 2: Transform answers
-python answer/reorder_answers.py
-python answer/renumber_steps.py
-python answer/format_final_output.py
-
-# Step 3: Run tests
-python test/validate_ordering.py
-python test/compare_with_ground_truth.py
-```
-
-Ensure that the necessary input datasets are available in the `data/` directory before executing the scripts.
+- `folio_acc.py`: Evaluates accuracy on the FOLIO dataset.
+- `logicnli_acc.py`: Evaluates accuracy on LogicNLI dataset.
+- `ruletaker_acc.py`: Evaluates accuracy on RuleTaker dataset.
 
 ---
 
 ## Notes
 
-- The **condition processing** ensures that logical dependencies are well-structured before answer transformation.
-- The **answer transformation** creates diverse logical reasoning sequences while maintaining validity.
-- The **testing phase** guarantees correctness and robustness of the processed data.
+- Ensure dependencies (such as Python libraries) are installed before running the scripts.
 
-For any issues, refer to the respective script comments or open an issue in the repository. 🚀
-
+---
