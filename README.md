@@ -57,7 +57,7 @@ order_centric/
 
 ### 1️⃣ Condition Order Augmentation (`condition/`)
 
-- ``: Prepares the dataset by modifying input conditions before answer processing.
+- Prepares the dataset by modifying input conditions before answer processing.
 
 ### 2️⃣ Answer Order Augmentation (`answer/`)
 
@@ -75,14 +75,14 @@ This stage processes answer data, ensuring logical order, formatting, and restru
 
 ### 3️⃣ Testing (`test/`)
 
-#### **Inference (**``**):**
+#### **Inference :**
 
 - `folio_vllm.py`: Runs inference on the FOLIO dataset.
 - `logicnli_vllm.py`: Runs inference on the LogicNLI dataset.
 - `ruletaker_vllm.py`: Runs inference on the RuleTaker dataset.
 
 
-#### **Accuracy Evaluation (**``**):**
+#### **Accuracy Evaluation :**
 
 - `folio_acc.py`: Evaluates accuracy on the FOLIO dataset.
 - `logicnli_acc.py`: Evaluates accuracy on LogicNLI dataset.
