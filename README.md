@@ -1,7 +1,7 @@
 # Order-Centric-Data-Augmentation
 
 ## Overview
-This repository contains the official implementation of the paper **"Order Doesn't Matter, But Reasoning Does: Training LLMs with Order-Centric Augmentation"**.
+This repository contains the official implementation of the paper **"Order Doesn't Matter, But Reasoning Does: Training LLMs with Order-Centric Augmentation"**.[📄 Read the full paper](https://arxiv.org/abs/2502.19907)
 
 We propose an **order-centric data augmentation framework** to enhance logical reasoning in large language models (LLMs) by leveraging the **commutativity** of premises and structured reordering of reasoning steps. Our experiments demonstrate that this approach significantly improves LLMs' ability to generalize across different logical reasoning structures.
 
